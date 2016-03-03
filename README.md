@@ -1,0 +1,1 @@
+# libhs2client C++ HiveServer2 client implementation
