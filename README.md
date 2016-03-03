@@ -1,1 +1,1 @@
-# libhs2client C++ HiveServer2 client implementation
+# libhs2client: C++ Thrift client for Impala and Hive
