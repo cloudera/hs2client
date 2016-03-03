@@ -1,1 +1,1 @@
-# libhs2client: C++ Thrift client for Impala and Hive
+# hs2client: C++ Thrift client for Impala and Hive
