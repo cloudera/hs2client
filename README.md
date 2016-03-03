@@ -2,6 +2,9 @@
 
 ## Development bootstrap
 
+To build standalone thirdparty dependencies, ensure you are using a C++11
+compiler and run:
+
 ```bash
 # Build thirdparty Thrift and googletest and set $THRIFT_HOME.
 
