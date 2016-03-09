@@ -32,17 +32,13 @@ set(THRIFT_SRC
   Types_constants.cpp
   Types_types.cpp
 )
+
 set_source_files_properties(${THRIFT_SRC} PROPERTIES
   COMPILE_FLAGS -Wno-unused-variable)
-
 
 # keep everything in one library, the object files reference
 # each other
 add_library(hs2client_thrift ${THRIFT_SRC})
-
-set_target_properties(hs2client_thrift
-  PROPERTIES
-  LIBRARY_OUTPUT_DIRECTORY "${BUILD_OUTPUT_ROOT_DIRECTORY}")
 
 # Setting these files as code-generated lets make clean and incremental builds work
 # correctly
@@ -51,6 +47,10 @@ set_target_properties(hs2client_thrift
 # ImpalaService.cpp and others. Couldn't figure out what is different between
 # this setup and Impala.
 
-# set_source_files_properties(${THRIFT_SRC} PROPERTIES GENERATED TRUE)
+set_source_files_properties(${THRIFT_SRC} PROPERTIES GENERATED TRUE)
 
 add_dependencies(hs2client_thrift thrift-cpp)
+
+set_target_properties(hs2client_thrift
+  PROPERTIES
+  LIBRARY_OUTPUT_DIRECTORY "${BUILD_OUTPUT_ROOT_DIRECTORY}")

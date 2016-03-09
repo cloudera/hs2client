@@ -45,9 +45,9 @@ function(THRIFT_GEN VAR)
     #   - Does not include .skeleton.cpp files
     #   - Does not include java output files
     set(OUTPUT_BE_FILE "${OUTPUT_DIR}/gen-cpp/${FIL_WE}_types.cpp")
-    set(OUTPUT_BE_FILE ${OUTPUT_BE_FILE} "${OUTPUT_DIR}/gen-cpp/${FIL_WE}_types.h")
-    set(OUTPUT_BE_FILE ${OUTPUT_BE_FILE} "${OUTPUT_DIR}/gen-cpp/${FIL_WE}_constants.cpp")
-    set(OUTPUT_BE_FILE ${OUTPUT_BE_FILE} "${OUTPUT_DIR}/gen-cpp/${FIL_WE}_constants.h")
+    set(OUTPUT_BE_FILE ${OUTPUT_BE_FILE} " ${OUTPUT_DIR}/gen-cpp/${FIL_WE}_types.h")
+    set(OUTPUT_BE_FILE ${OUTPUT_BE_FILE} " ${OUTPUT_DIR}/gen-cpp/${FIL_WE}_constants.cpp")
+    set(OUTPUT_BE_FILE ${OUTPUT_BE_FILE} " ${OUTPUT_DIR}/gen-cpp/${FIL_WE}_constants.h")
     list(APPEND ${VAR} ${OUTPUT_BE_FILE})
 
     # BeeswaxService thrift generation
@@ -79,12 +79,12 @@ file(MAKE_DIRECTORY ${OUTPUT_DIR})
 
 set(SRC_FILES
   ErrorCodes.thrift
-  ExecStats.thrift
-  Status.thrift
-  Types.thrift
   beeswax.thrift
   TCLIService.thrift
+  ExecStats.thrift
   ImpalaService.thrift
+  Status.thrift
+  Types.thrift
 )
 
 SET_SOURCE_FILES_PROPERTIES(Status.thrift PROPERTIES OBJECT_DEPENDS ErrorCodes.thrift)
