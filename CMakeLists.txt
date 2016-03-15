@@ -275,9 +275,9 @@ endif()
 # Library config
 
 set(LIBHS2CLIENT_SRCS
-  src/hs2client/batch.cc
   src/hs2client/hs2session.cc
   src/hs2client/operation.cc
+  src/hs2client/sample_usage.cc
 )
 
 set(LIBHS2CLIENT_LINK_LIBS

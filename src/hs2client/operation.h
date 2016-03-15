@@ -15,14 +15,13 @@
 #ifndef HS2CLIENT_OPERATION_H
 #define HS2CLIENT_OPERATION_H
 
-#include "hs2client/batch.h"
+#include "hs2client/columnar_row_set.h"
 #include "hs2client/status.h"
 
 namespace hs2client {
 
 class HS2Session;
 struct OperationInfo;
-struct TableSchemaInfo;
 
 enum FetchOrientation {
   FETCH_NEXT,
@@ -33,11 +32,6 @@ enum FetchOrientation {
   FETCH_LAST
 };
 
-class TableSchema {
- public:
-  TableSchema(TableSchemaInfo table_schema_info);
-};
-
 /**
  * Represents a single HiveServer2 operation. Used to monitor the status of an operation
  * and to retrieve its results.
@@ -46,25 +40,28 @@ class Operation {
  public:
   Operation(HS2Session session, OperationInfo operation_info, int retries = 3);
 
+  // Disable copy and assignment.
+  Operation(Operation const&) = delete;
+  Operation& operator=(Operation const&) = delete;
+
+  Status Execute(bool async = false);
+
   bool HasResultSet();
 
   Status GetStatus();
 
-  std::string GetLog();
+  Status GetLog(std::string* out);
 
-  void Cancel();
+  Status Cancel();
 
-  void Close();
+  Status Close();
 
-  std::string GetProfile();
+  Status GetProfile(std::string* out);
 
-  Batch& Fetch(TableSchema schema, int max_rows = 1024,
-      FetchOrientation orientation = FetchOrientation::FETCH_NEXT,
-      bool convert_types = true);
+  Status Fetch(std::unique_ptr<ColumnarRowSet>* out, int max_rows = 1024,
+      FetchOrientation orientation = FetchOrientation::FETCH_NEXT);
 
   bool IsColumnar();
-
-  TableSchema GetResultSchema();
 };
 
 }

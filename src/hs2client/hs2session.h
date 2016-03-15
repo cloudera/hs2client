@@ -32,23 +32,29 @@ class HS2Session {
       HS2ClientConfig config,
       int retries = 3);
 
-  void Close();
+  // Disable copy and assignment.
+  HS2Session(HS2Session const&) = delete;
+  HS2Session& operator=(HS2Session const&) = delete;
 
-  Operation Execute(const std::string& statement,
-      HS2ClientConfig config = std::map<std::string, std::string>(), bool async = false);
+  Status Close();
 
-  Operation GetDatabases(const std::string& schema = ".*");
+  std::shared_ptr<Operation> ExecuteStatement(const std::string& statement,
+      HS2ClientConfig config = std::map<std::string, std::string>());
 
-  Operation GetTables(const std::string& database = ".*",
+  std::shared_ptr<Operation> GetDatabases(const std::string& schema = ".*");
+
+  std::shared_ptr<Operation> GetTables(const std::string& database = ".*",
       const std::string& table_like = ".*");
 
-  Operation GetTableSchema(const std::string& table, const std::string& database = ".*");
+  std::shared_ptr<Operation> GetTableSchema(const std::string& table,
+      const std::string& database = ".*");
 
-  Operation GetFunctions(const std::string& database = ".*");
+  std::shared_ptr<Operation> GetFunctions(const std::string& database = ".*");
 
-  Operation DatabaseExists(const std::string& database = ".*");
+  std::shared_ptr<Operation> DatabaseExists(const std::string& database = ".*");
 
-  Operation TableExists(const std::string& table, const std::string& database = ".*");
+  std::shared_ptr<Operation> TableExists(const std::string& table,
+      const std::string& database = ".*");
 
   bool Ping();
 };

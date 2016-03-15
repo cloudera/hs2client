@@ -16,7 +16,10 @@
 #define HS2CLIENT_HS2SERVICE_H
 
 #include <map>
+#include <memory>
 #include <string>
+
+#include "hs2client/status.h"
 
 namespace hs2client {
 
@@ -29,16 +32,22 @@ typedef std::map<std::string, std::string> HS2ClientConfig;
  */
 class HS2Service {
  public:
-  static HS2Service connect(const std::string& host, int port, int timeout = -1,
-      bool use_ssl = false);
+  static Status Connect(const std::string& host, int port, int timeout, bool use_ssl,
+      std::unique_ptr<HS2Service>* out);
 
+  // Disable copy and assignment.
+  HS2Service(HS2Service const&) = delete;
+  HS2Service& operator=(HS2Service const&) = delete;
+
+  Status Close();
+
+  Status Reconnect();
+
+  Status OpenSession(const std::string& user, HS2ClientConfig config,
+      std::unique_ptr<HS2Session>* out);
+
+ private:
   HS2Service(int retries = 3);
-
-  void Close();
-
-  void Reconnect();
-
-  HS2Session OpenSession(const std::string& user, HS2ClientConfig config);
 };
 
 }

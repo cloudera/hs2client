@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "batch.h"
+#include "columnar_row_set.h"
 
 #include "gen-cpp/TCLIService_types.h"
 
 namespace hs2client {
 
-struct BatchInfo {
+struct ColumnarRowSetInfo {
+ public:
   apache::hive::service::cli::thrift::TRowSet trow_set_;
-  apache::hive::service::cli::thrift::TTableSchema schema_;
 };
 
 }

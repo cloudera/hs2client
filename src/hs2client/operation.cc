@@ -23,9 +23,4 @@ struct OperationInfo {
   apache::hive::service::cli::thrift::TOperationHandle handle_;
 };
 
-struct TableSchemaInfo {
- public:
-  apache::hive::service::cli::thrift::TTableSchema schema_;
-};
-
 }
