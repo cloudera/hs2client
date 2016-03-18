@@ -32,8 +32,14 @@ typedef std::map<std::string, std::string> HS2ClientConfig;
  */
 class HS2Service {
  public:
+  // The client calling Connect has ownership of the new HS2Service that is
+  // created.
+  // Executing RPCs with an HS2Session or Operation corresponding to a particular
+  // HS2Service after that HS2Service has been closed or deleted in undefined.
   static Status Connect(const std::string& host, int port, int timeout, bool use_ssl,
       std::unique_ptr<HS2Service>* out);
+
+  ~HS2Service();
 
   // Disable copy and assignment.
   HS2Service(HS2Service const&) = delete;
@@ -43,11 +49,18 @@ class HS2Service {
 
   Status Reconnect();
 
-  Status OpenSession(const std::string& user, HS2ClientConfig config,
+  // The client calling OpenSession has ownership of the HS2Session that is created.
+  // Executing RPCs with an Operation corresponding to a particular HS2Session after
+  // that HS2Session has been closed or deleted is undefined.
+  Status OpenSession(const std::string& user, const HS2ClientConfig& config,
       std::unique_ptr<HS2Session>* out);
 
  private:
-  HS2Service(int retries = 3);
+  struct Impl;
+
+  HS2Service(HS2Service::Impl* impl);
+
+  std::unique_ptr<HS2Service::Impl> impl_;
 };
 
 }

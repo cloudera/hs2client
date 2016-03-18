@@ -19,8 +19,6 @@
 
 namespace hs2client {
 
-struct ColumnarRowSetInfo;
-
 struct Column {
   int64_t length;
   const void* nulls;
@@ -60,16 +58,21 @@ struct BinaryColumn : public Column {
 
 class ColumnarRowSet {
  public:
-  BoolColumn GetBool(int i);
-  ByteColumn GetByte(int i);
-  Int16Column GetInt16(int i);
-  Int32Column GetInt32(int i);
-  Int64Column GetInt64(int i);
-  StringColumn GetString(int i);
-  BinaryColumn GetBinary(int i);
+  ColumnarRowSet();
+  ~ColumnarRowSet();
+
+  BoolColumn GetBoolCol(int i);
+  ByteColumn GetByteCol(int i);
+  Int16Column GetInt16Col(int i);
+  Int32Column GetInt32Col(int i);
+  Int64Column GetInt64Col(int i);
+  StringColumn GetStringCol(int i);
+  BinaryColumn GetBinaryCol(int i);
 
  private:
-  std::unique_ptr<ColumnarRowSetInfo> info_;
+  struct Impl;
+
+  std::unique_ptr<Impl> info_;
 };
 
 }

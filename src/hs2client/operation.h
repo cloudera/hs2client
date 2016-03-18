@@ -21,7 +21,6 @@
 namespace hs2client {
 
 class HS2Session;
-struct OperationInfo;
 
 enum FetchOrientation {
   FETCH_NEXT,
@@ -38,7 +37,7 @@ enum FetchOrientation {
  */
 class Operation {
  public:
-  Operation(HS2Session session, OperationInfo operation_info, int retries = 3);
+  ~Operation();
 
   // Disable copy and assignment.
   Operation(Operation const&) = delete;
@@ -62,6 +61,17 @@ class Operation {
       FetchOrientation orientation = FetchOrientation::FETCH_NEXT);
 
   bool IsColumnar();
+
+ private:
+  struct Impl;
+
+  friend class HS2Session;
+
+  Operation(HS2Session* session);
+
+  HS2Session* session;
+
+  std::unique_ptr<Operation::Impl> impl_;
 };
 
 }

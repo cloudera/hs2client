@@ -20,17 +20,12 @@
 
 namespace hs2client {
 
-struct HS2SessionInfo;
-
 /**
  * Manages a single HiveServer2 session.
  */
 class HS2Session {
  public:
-  HS2Session(HS2Service service,
-      HS2SessionInfo session_info,
-      HS2ClientConfig config,
-      int retries = 3);
+  ~HS2Session();
 
   // Disable copy and assignment.
   HS2Session(HS2Session const&) = delete;
@@ -39,7 +34,7 @@ class HS2Session {
   Status Close();
 
   std::shared_ptr<Operation> ExecuteStatement(const std::string& statement,
-      HS2ClientConfig config = std::map<std::string, std::string>());
+      const HS2ClientConfig& config = std::map<std::string, std::string>());
 
   std::shared_ptr<Operation> GetDatabases(const std::string& schema = ".*");
 
@@ -57,6 +52,17 @@ class HS2Session {
       const std::string& database = ".*");
 
   bool Ping();
+
+ private:
+  struct Impl;
+
+  friend class HS2Service;
+
+  HS2Session(HS2Service* service);
+
+  HS2Service* service_;
+
+  std::unique_ptr<HS2Service::Impl> impl_;
 };
 
 }

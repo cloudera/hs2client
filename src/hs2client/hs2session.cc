@@ -14,14 +14,16 @@
 
 #include "hs2session.h"
 
+#include "gen-cpp/TCLIService.h"
 #include "gen-cpp/TCLIService_types.h"
 
 namespace hs2client {
 
-struct HS2SessionInfo {
- public:
+struct HS2Session::Impl {
   apache::hive::service::cli::thrift::TSessionHandle handle_;
   apache::hive::service::cli::thrift::TProtocolVersion hs2_protocol_version_;
 };
+
+HS2Session::~HS2Session() = default;
 
 }
