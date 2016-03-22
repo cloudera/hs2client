@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
 
   // Open a session.
   std::string user = "user";
-  HS2ClientConfig config = std::map<std::string, std::string>();
+  HS2ClientConfig config;
   std::unique_ptr<HS2Session> session;
   status = service->OpenSession(user, config, &session);
 

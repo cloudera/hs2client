@@ -25,7 +25,15 @@ namespace hs2client {
 
 class HS2Session;
 
-typedef std::map<std::string, std::string> HS2ClientConfig;
+class HS2ClientConfig {
+ public:
+  void set_option(const std::string& key, const std::string& value);
+
+  void get_option(const std::string& key);
+
+ private:
+  std::map<std::string, std::string> config_;
+};
 
 /**
  * Manages a connection to a HiveServer2 server.
@@ -60,7 +68,7 @@ class HS2Service {
 
   HS2Service(HS2Service::Impl* impl);
 
-  std::unique_ptr<HS2Service::Impl> impl_;
+  std::unique_ptr<Impl> impl_;
 };
 
 }

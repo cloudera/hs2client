@@ -34,7 +34,7 @@ class HS2Session {
   Status Close();
 
   std::shared_ptr<Operation> ExecuteStatement(const std::string& statement,
-      const HS2ClientConfig& config = std::map<std::string, std::string>());
+      const HS2ClientConfig& config = HS2ClientConfig());
 
   std::shared_ptr<Operation> GetDatabases(const std::string& schema = ".*");
 
@@ -62,7 +62,7 @@ class HS2Session {
 
   HS2Service* service_;
 
-  std::unique_ptr<HS2Service::Impl> impl_;
+  std::unique_ptr<HS2Session::Impl> impl_;
 };
 
 }
