@@ -63,7 +63,7 @@ class Operation {
   bool IsColumnar();
 
  private:
-  struct Impl;
+  struct OperationImpl;
 
   friend class HS2Session;
 
@@ -73,7 +73,7 @@ class Operation {
   // to ensure that the session is not deleted while there are still active operations.
   HS2Session* session_;
 
-  std::unique_ptr<Operation::Impl> impl_;
+  std::unique_ptr<OperationImpl> impl_;
 };
 
 }

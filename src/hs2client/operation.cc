@@ -18,7 +18,7 @@
 
 namespace hs2client {
 
-struct Operation::Impl {
+struct Operation::OperationImpl {
   apache::hive::service::cli::thrift::TOperationHandle handle_;
 };
 
