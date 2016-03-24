@@ -54,15 +54,19 @@ class HS2Session {
   bool Ping();
 
  private:
-  struct Impl;
+  struct HS2SessionImpl;
 
   friend class HS2Service;
 
   HS2Session(HS2Service* service);
 
+  Status Open();
+
+  // This ptr is owned by the client that created the HS2Service. It is up to the client
+  // to ensure that the service is not deleted while there are still active sessions.
   HS2Service* service_;
 
-  std::unique_ptr<HS2Session::Impl> impl_;
+  std::unique_ptr<HS2SessionImpl> impl_;
 };
 
 }

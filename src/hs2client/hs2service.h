@@ -27,9 +27,9 @@ class HS2Session;
 
 class HS2ClientConfig {
  public:
-  void set_option(const std::string& key, const std::string& value);
+  void SetOption(const std::string& key, const std::string& value);
 
-  void get_option(const std::string& key);
+  std::string GetOption(const std::string& key);
 
  private:
   std::map<std::string, std::string> config_;
@@ -64,11 +64,19 @@ class HS2Service {
       std::unique_ptr<HS2Session>* out);
 
  private:
-  struct Impl;
+  struct HS2ServiceImpl;
 
-  HS2Service(HS2Service::Impl* impl);
+  HS2Service(const std::string& host, int port, int timeout, bool use_ssl);
 
-  std::unique_ptr<Impl> impl_;
+  // Opens the connection to the server.
+  Status Open();
+
+  std::string host_;
+  int port_;
+  int timeout_;
+  bool use_ssl_;
+
+  std::unique_ptr<HS2ServiceImpl> impl_;
 };
 
 }

@@ -48,6 +48,8 @@ class Status {
   bool IsError();
   bool IsInvalidHandle();
 
+  bool ok();
+
   // Return a string representation of this status suitable for printing.
   std::string ToString();
 };

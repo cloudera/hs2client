@@ -17,28 +17,27 @@
 #include "hs2client/status.h"
 
 using namespace hs2client;
+using namespace std;
 
 int main(int argc, char** argv) {
 
   // Connect to the server.
-  std::string host = "host";
+  string host = "host";
   int port = 0;
   int timeout = 10;
   bool use_ssl = false;
-  std::unique_ptr<HS2Service> service;
+  unique_ptr<HS2Service> service;
   Status status = HS2Service::Connect(host, port, timeout, use_ssl, &service);
 
   // Open a session.
-  std::string user = "user";
+  string user = "user";
   HS2ClientConfig config;
-  std::unique_ptr<HS2Session> session;
+  unique_ptr<HS2Session> session;
   status = service->OpenSession(user, config, &session);
 
   // Execute a statement.
-  std::string statement = "SELECT * FROM test";
-  std::shared_ptr<Operation> op = session->ExecuteStatement(statement);
-  bool async = true;
-  op->Execute(async);
+  string statement = "SELECT * FROM test";
+  shared_ptr<Operation> op = session->ExecuteStatement(statement);
 
   return 0;
 }

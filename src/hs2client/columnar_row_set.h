@@ -70,9 +70,9 @@ class ColumnarRowSet {
   BinaryColumn GetBinaryCol(int i);
 
  private:
-  struct Impl;
+  struct ColumnarRowSetImpl;
 
-  std::unique_ptr<Impl> info_;
+  std::unique_ptr<ColumnarRowSetImpl> impl_;
 };
 
 }

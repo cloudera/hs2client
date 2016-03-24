@@ -19,7 +19,7 @@
 
 namespace hs2client {
 
-struct HS2Session::Impl {
+struct HS2Session::HS2SessionImpl {
   apache::hive::service::cli::thrift::TSessionHandle handle_;
   apache::hive::service::cli::thrift::TProtocolVersion hs2_protocol_version_;
 };

@@ -27,42 +27,48 @@ using apache::thrift::protocol::TProtocol;
 using apache::thrift::transport::TBufferedTransport;
 using apache::thrift::transport::TSocket;
 using apache::thrift::transport::TTransport;
+using namespace std;
 
 namespace hs2client {
 
-struct HS2Service::Impl {
+struct HS2Service::HS2ServiceImpl {
+  // The use of boost here is required for Thrift compatibility.
   boost::shared_ptr<TSocket> socket_;
   boost::shared_ptr<TTransport> transport_;
   boost::shared_ptr<TProtocol> protocol_;
 
-  std::shared_ptr<TCLIServiceClient> client_;
+  shared_ptr<TCLIServiceClient> client_;
 };
 
-Status HS2Service::Connect(const std::string& host, int port, int timeout, bool use_ssl,
-    std::unique_ptr<HS2Service>* out) {
-  std::unique_ptr<HS2Service::Impl> impl(new HS2Service::Impl());
+Status HS2Service::Connect(const string& host, int port, int timeout, bool use_ssl,
+    unique_ptr<HS2Service>* out) {
+  out->reset(new HS2Service(host, port, timeout, use_ssl));
 
+  return (*out)->Open();
+}
+
+HS2Service::HS2Service(const string& host, int port, int timeout, bool use_ssl)
+    : host_(host), port_(port), timeout_(timeout), use_ssl_(use_ssl),
+      impl_(new HS2ServiceImpl()) {}
+
+HS2Service::~HS2Service() = default;
+
+Status HS2Service::Open() {
   // TODO: error checking
-  impl->socket_.reset(new TSocket(host, port));
-  impl->transport_.reset(new TBufferedTransport(impl->socket_));
-  impl->protocol_.reset(new TBinaryProtocol(impl->transport_));
+  impl_->socket_.reset(new TSocket(host_, port_));
+  impl_->transport_.reset(new TBufferedTransport(impl_->socket_));
+  impl_->protocol_.reset(new TBinaryProtocol(impl_->transport_));
 
-  impl->client_.reset(new TCLIServiceClient(impl->protocol_));
-
-  out->reset(new HS2Service(impl.release()));
+  impl_->client_.reset(new TCLIServiceClient(impl_->protocol_));
 
   return Status::Success();
 }
 
-HS2Service::HS2Service(HS2Service::Impl* impl): impl_(impl) {}
-
-HS2Service::~HS2Service() = default;
-
-Status HS2Service::OpenSession(const std::string& user, const HS2ClientConfig& config,
-    std::unique_ptr<HS2Session>* out) {
+Status HS2Service::OpenSession(const string& user, const HS2ClientConfig& config,
+    unique_ptr<HS2Session>* out) {
   out->reset(new HS2Session(this));
 
-  return Status::Success();
+  return (*out)->Open();
 }
 
 }

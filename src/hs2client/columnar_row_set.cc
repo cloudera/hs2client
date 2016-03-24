@@ -18,8 +18,8 @@
 
 namespace hs2client {
 
-struct ColumnarRowSet::Impl {
-  apache::hive::service::cli::thrift::TRowSet trow_set_;
+struct ColumnarRowSet::ColumnarRowSetImpl {
+  apache::hive::service::cli::thrift::TRowSet row_set_;
 };
 
 }

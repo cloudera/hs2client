@@ -43,8 +43,6 @@ class Operation {
   Operation(Operation const&) = delete;
   Operation& operator=(Operation const&) = delete;
 
-  Status Execute(bool async = false);
-
   bool HasResultSet();
 
   Status GetStatus();
@@ -57,8 +55,10 @@ class Operation {
 
   Status GetProfile(std::string* out);
 
-  Status Fetch(std::unique_ptr<ColumnarRowSet>* out, int max_rows = 1024,
-      FetchOrientation orientation = FetchOrientation::FETCH_NEXT);
+  Status Fetch(std::unique_ptr<ColumnarRowSet>* out);
+
+  Status Fetch(int max_rows, FetchOrientation orientation,
+      std::unique_ptr<ColumnarRowSet>* out);
 
   bool IsColumnar();
 
@@ -69,7 +69,9 @@ class Operation {
 
   Operation(HS2Session* session);
 
-  HS2Session* session;
+  // This ptr is owned by the client that created the HS2Session. It is up to the client
+  // to ensure that the session is not deleted while there are still active operations.
+  HS2Session* session_;
 
   std::unique_ptr<Operation::Impl> impl_;
 };
