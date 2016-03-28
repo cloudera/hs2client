@@ -243,9 +243,9 @@ endif (UNIX)
 # Test linking
 
 set(HS2CLIENT_MIN_TEST_LIBS
-  hs2client_test_main
-  hs2client)
-set(HS2CLIENT_TEST_LINK_LIBS ${HS2CLIENT_MIN_TEST_LIBS})
+  hs2client
+  hs2client_thrift)
+set(HS2CLIENT_TEST_LINK_LIBS ${HS2CLIENT_MIN_TEST_LIBS} gtest pthread)
 
 #############################################################
 # Code coverage
@@ -275,6 +275,15 @@ endif()
 # Library config
 
 set(LIBHS2CLIENT_SRCS
+  src/hs2client/columnar-row-set.cc
+  src/hs2client/service.cc
+  src/hs2client/session.cc
+  src/hs2client/operation.cc
+  src/hs2client/sample-usage.cc
+  src/hs2client/status.cc
+  src/hs2client/thrift-internal.cc
+  src/hs2client/types.cc
+  src/hs2client/util.cc
 )
 
 set(LIBHS2CLIENT_LINK_LIBS
@@ -295,6 +304,7 @@ add_library(hs2client
   ${LIBHS2CLIENT_LINKAGE}
   ${LIBHS2CLIENT_SRCS}
 )
+add_dependencies(hs2client hs2client_thrift)
 set_target_properties(hs2client
   PROPERTIES
   LIBRARY_OUTPUT_DIRECTORY "${BUILD_OUTPUT_ROOT_DIRECTORY}")
@@ -315,3 +325,8 @@ add_custom_target(clean-all
 install(TARGETS hs2client
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib)
+
+ADD_HS2CLIENT_TEST(src/hs2client/service-test)
+ADD_HS2CLIENT_TEST(src/hs2client/session-test)
+ADD_HS2CLIENT_TEST(src/hs2client/operation-test)
+ADD_HS2CLIENT_TEST(src/hs2client/public-api-test)

@@ -1,0 +1,12 @@
+*~
+build/
+thirdparty
+
+# CMake:
+Makefile
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+CTestTestfile.cmake
+!CMakeLists.txt
+Testing/
