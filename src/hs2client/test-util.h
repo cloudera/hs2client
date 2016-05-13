@@ -24,11 +24,15 @@
 #include "hs2client/session.h"
 #include "hs2client/thrift-internal.h"
 
-#define EXPECT_ERROR(s) EXPECT_FALSE(s.ok());
-
-#define EXPECT_OK(s) EXPECT_TRUE(s.ok()) << s.GetMessage();
-
 namespace hs2client {
+
+// Macros for interacting with hs2client::Status objects
+#define EXPECT_ERROR(s) EXPECT_FALSE(s.ok());
+#define EXPECT_OK(stmt)                                                    \
+  do {                                                                     \
+    Status _hs2client_status = (stmt);                                     \
+    EXPECT_TRUE(_hs2client_status.ok()) << _hs2client_status.GetMessage(); \
+  } while(false)
 
 const static std::string& TEST_DB = "hs2client_test_db";
 
