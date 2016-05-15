@@ -12,11 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifndef HS2CLIENT_API_H
+
 #include "hs2client/columnar-row-set.h"
-#include "hs2client/service.h"
-#include "hs2client/session.h"
 #include "hs2client/logging.h"
 #include "hs2client/macros.h"
 #include "hs2client/operation.h"
+#include "hs2client/service.h"
+#include "hs2client/session.h"
 #include "hs2client/status.h"
+#include "hs2client/types.h"
 #include "hs2client/util.h"
+
+#endif  // HS2CLIENT_API_H

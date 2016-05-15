@@ -1,0 +1,27 @@
+package:
+  name: libhs2client
+  version: "0.1"
+
+build:
+  number: {{environ.get('TRAVIS_BUILD_NUMBER', 0)}}    # [unix]
+  skip: true  # [win]
+  script_env:
+    - CC [linux]
+    - CXX [linux]
+    - LD_LIBRARY_PATH [linux]
+
+requirements:
+  build:
+    - cmake
+    - boost
+    - thrift-cpp
+
+test:
+  commands:
+    - test -f $PREFIX/lib/libhs2client.so
+    - test -f $PREFIX/include/hs2client/api.h
+
+about:
+  home: http://github.com/cloudera/hs2client
+  license: Apache 2.0
+  summary: 'Libraries for the hs2client, C++ HiveServer2 Thrift client'

@@ -14,12 +14,12 @@ download_extract_and_cleanup() {
 	rm $filename
 }
 
-if [ ! -d ${GTEST_BASEDIR} ]; then
+if [ ! -d $TP_DIR/${GTEST_BASEDIR} ]; then
   echo "Fetching gtest"
   download_extract_and_cleanup $GTEST_URL
 fi
 
-if [ ! -d ${THRIFT_BASEDIR} ]; then
+if [ ! -d $TP_DIR/${THRIFT_BASEDIR} ]; then
   echo "Fetching thrift"
   download_extract_and_cleanup $THRIFT_URL
 fi

@@ -25,6 +25,11 @@ enable_testing()
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules")
 set(BUILD_SUPPORT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build-support)
 
+# Allow "make install" to not depend on all targets.
+#
+# Must be declared in the top-level CMakeLists.txt.
+set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
+
 if(APPLE)
   set(CMAKE_MACOSX_RPATH 1)
 endif()
@@ -57,6 +62,12 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
 	"Build the libhs2client executable CLI tools"
 	ON)
 endif()
+
+find_program(CCACHE_FOUND ccache)
+if(CCACHE_FOUND)
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
+endif(CCACHE_FOUND)
 
 # If build in-source, create the latest symlink. If build out-of-source, which is
 # preferred, simply output the binaries in the build folder

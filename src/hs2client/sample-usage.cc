@@ -15,10 +15,7 @@
 #include <cassert>
 #include <iostream>
 
-#include "hs2client/service.h"
-#include "hs2client/session.h"
-#include "hs2client/status.h"
-#include "hs2client/util.h"
+#include "hs2client/api.h"
 
 using namespace hs2client;
 using namespace std;
