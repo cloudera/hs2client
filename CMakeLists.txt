@@ -47,7 +47,7 @@ endif()
 
 # if no build build type is specified, default to debug builds
 if (NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
+  set(CMAKE_BUILD_TYPE Release)
 endif(NOT CMAKE_BUILD_TYPE)
 
 # set compile output directory
@@ -297,10 +297,6 @@ set(LIBHS2CLIENT_SRCS
   src/hs2client/util.cc
 )
 
-set(LIBHS2CLIENT_LINK_LIBS
-  thriftstatic
-)
-
 if ("${HS2CLIENT_LINK}" STREQUAL "d" OR "${HS2CLIENT_LINK}" STREQUAL "a")
   set(LIBHS2CLIENT_LINKAGE "SHARED")
 else()
@@ -315,6 +311,12 @@ add_library(hs2client
   ${LIBHS2CLIENT_LINKAGE}
   ${LIBHS2CLIENT_SRCS}
 )
+
+set(LIBHS2CLIENT_LINK_LIBS
+  hs2client_thrift
+  thriftstatic
+)
+
 add_dependencies(hs2client hs2client_thrift)
 set_target_properties(hs2client
   PROPERTIES

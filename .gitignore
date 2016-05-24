@@ -10,3 +10,4 @@ cmake_install.cmake
 CTestTestfile.cmake
 !CMakeLists.txt
 Testing/
+install_manifest.txt

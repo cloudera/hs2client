@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifndef HS2CLIENT_UTIL_H
+#define HS2CLIENT_UTIL_H
+
 #include <string>
 
 #include "hs2client/operation.h"
@@ -27,3 +30,5 @@ class Util {
 };
 
 } // namespace hs2client
+
+#endif // HS2CLIENT_UTIL_H

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #ifndef HS2CLIENT_API_H
+#define HS2CLIENT_API_H
 
 #include "hs2client/columnar-row-set.h"
 #include "hs2client/logging.h"

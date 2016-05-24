@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef HS2CLIENT_HS2SESSION_H
-#define HS2CLIENT_HS2SESSION_H
+#ifndef HS2CLIENT_SESSION_H
+#define HS2CLIENT_SESSION_H
 
 #include <string>
 
@@ -73,4 +73,4 @@ class Session {
 
 } // namespace hs2client
 
-#endif // HS2CLIENT_HS2SESSION_H
+#endif // HS2CLIENT_SESSION_H

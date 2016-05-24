@@ -27,60 +27,60 @@ ColumnarRowSet::ColumnarRowSet(ColumnarRowSetImpl* impl) : impl_(impl) {}
 
 ColumnarRowSet::~ColumnarRowSet() = default;
 
-unique_ptr<BoolColumn> ColumnarRowSet::GetBoolCol(int i) const {
-  hs2::TBoolColumn& bool_col = impl_->resp.results.columns[i].boolVal;
-  unique_ptr<BoolColumn> col(new BoolColumn(
-      reinterpret_cast<const uint8_t*>(bool_col.nulls.c_str()),
-      &bool_col.values));
-  return col;
+template <typename T>
+struct type_helpers {};
+
+#define VALUE_GETTER(COLUMN_TYPE, VALUE_TYPE, ATTR_NAME)                \
+  template <>                                                           \
+  struct type_helpers<COLUMN_TYPE> {                                    \
+    static const std::vector<VALUE_TYPE>* GetValues(const hs2::TColumn& col) { \
+      return &col.ATTR_NAME.values;                                     \
+    }                                                                   \
+                                                                        \
+    static const std::string* GetNulls(const hs2::TColumn& col) {       \
+      return &col.ATTR_NAME.nulls;                                      \
+    }                                                                   \
+  };
+
+VALUE_GETTER(BoolColumn, bool, boolVal);
+VALUE_GETTER(ByteColumn, int8_t, byteVal);
+VALUE_GETTER(Int16Column, int16_t, i16Val);
+VALUE_GETTER(Int32Column, int32_t, i32Val);
+VALUE_GETTER(Int64Column, int64_t, i64Val);
+VALUE_GETTER(DoubleColumn, double, doubleVal);
+VALUE_GETTER(StringColumn, std::string, stringVal);
+
+#undef VALUE_GETTER
+
+template <typename T>
+unique_ptr<T> ColumnarRowSet::GetCol(int i) const {
+  using helper = type_helpers<T>;
+
+  DCHECK_LT(i, static_cast<int>(impl_->resp.results.columns.size()));
+
+  const hs2::TColumn& col = impl_->resp.results.columns[i];
+  return unique_ptr<T>(new T(helper::GetNulls(col), helper::GetValues(col)));
 }
 
-unique_ptr<ByteColumn> ColumnarRowSet::GetByteCol(int i) const {
-  hs2::TByteColumn& byte_col = impl_->resp.results.columns[i].byteVal;
-  unique_ptr<ByteColumn> col(new ByteColumn(
-      reinterpret_cast<const uint8_t*>(byte_col.nulls.c_str()),
-      &byte_col.values));
-  return col;
-}
+#define TYPED_GETTER(FUNC_NAME, TYPE)                                   \
+  unique_ptr<TYPE> ColumnarRowSet::FUNC_NAME(int i) const {             \
+    return GetCol<TYPE>(i);                                             \
+  }                                                                     \
+  template unique_ptr<TYPE> ColumnarRowSet::GetCol<TYPE>(int i) const;
 
-unique_ptr<Int16Column> ColumnarRowSet::GetInt16Col(int i) const {
-  hs2::TI16Column& int16_col = impl_->resp.results.columns[i].i16Val;
-  unique_ptr<Int16Column> col(new Int16Column(
-      reinterpret_cast<const uint8_t*>(int16_col.nulls.c_str()),
-      &int16_col.values));
-  return col;
-}
+TYPED_GETTER(GetBoolCol, BoolColumn);
+TYPED_GETTER(GetByteCol, ByteColumn);
+TYPED_GETTER(GetInt16Col, Int16Column);
+TYPED_GETTER(GetInt32Col, Int32Column);
+TYPED_GETTER(GetInt64Col, Int64Column);
+TYPED_GETTER(GetDoubleCol, DoubleColumn);
+TYPED_GETTER(GetStringCol, StringColumn);
 
-unique_ptr<Int32Column> ColumnarRowSet::GetInt32Col(int i) const {
-  hs2::TI32Column& int32_col = impl_->resp.results.columns[i].i32Val;
-  unique_ptr<Int32Column> col(new Int32Column(
-      reinterpret_cast<const uint8_t*>(int32_col.nulls.c_str()),
-      &int32_col.values));
-  return col;
-}
+#undef TYPED_GETTER
 
-unique_ptr<Int64Column> ColumnarRowSet::GetInt64Col(int i) const {
-  hs2::TI64Column& int64_col = impl_->resp.results.columns[i].i64Val;
-  unique_ptr<Int64Column> col(new Int64Column(
-      reinterpret_cast<const uint8_t*>(int64_col.nulls.c_str()),
-      &int64_col.values));
-  return col;
-}
-
-unique_ptr<StringColumn> ColumnarRowSet::GetStringCol(int i) const {
-  hs2::TStringColumn& string_col = impl_->resp.results.columns[i].stringVal;
-  unique_ptr<StringColumn> col(new StringColumn(
-      reinterpret_cast<const uint8_t*>(string_col.nulls.c_str()),
-      &string_col.values));
-  return col;
-}
-
+// BinaryColumn is an alias for StringColumn
 unique_ptr<BinaryColumn> ColumnarRowSet::GetBinaryCol(int i) const {
-  hs2::TBinaryColumn& binary_col = impl_->resp.results.columns[i].binaryVal;
-  unique_ptr<BinaryColumn> col(new BinaryColumn(
-      reinterpret_cast<const uint8_t*>(binary_col.nulls.c_str()),
-      &binary_col.values));
-  return col;
+  return GetCol<BinaryColumn>(i);
 }
 
 } // namespace hs2client

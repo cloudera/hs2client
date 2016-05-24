@@ -1,0 +1,29 @@
+# Editor temporary/working/backup files
+*flymake*
+
+# Compiled source and in-place build files
+*.py[ocd]
+*.so
+.build_cache_dir
+.cache
+.eggs
+MANIFEST
+
+# Generated sources
+*.c
+*.cpp
+*.cmake
+# Python files
+
+# setup.py working directory
+build
+# setup.py dist directory
+dist
+# Egg metadata
+*.egg-info
+# coverage
+.coverage
+coverage.xml
+
+# automatically generated during local development
+hs2client/version.py

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef HS2CLIENT_TYPE_H
-#define HS2CLIENT_TYPE_H
+#ifndef HS2CLIENT_TYPES_H
+#define HS2CLIENT_TYPES_H
 
 #include <memory>
 
@@ -132,4 +132,4 @@ class ColumnDesc {
 
 } // namespace hs2client
 
-#endif // HS2CLIENT_TYPE_H
+#endif // HS2CLIENT_TYPES_H

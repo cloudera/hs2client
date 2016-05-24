@@ -20,6 +20,7 @@
 #include <string>
 #include <vector>
 
+#include "hs2client/logging.h"
 #include "hs2client/macros.h"
 
 namespace hs2client {
@@ -51,35 +52,49 @@ class Column {
  public:
   virtual ~Column() {}
 
-  virtual const uint8_t* nulls() const = 0;
   virtual int64_t length() const = 0;
-  virtual bool IsNull(int i) const = 0;
+
+  const uint8_t* nulls() const { return nulls_; }
+  int nulls_size() const { return nulls_size_;}
+
+  // Returns true iff the value for the i-th row within this set of data for this
+  // column is null.
+  bool IsNull(int i) const { return (nulls_[i / 8] & (1 << (i % 8))) != 0; }
+
+ protected:
+  Column(const std::string* nulls) {
+    DCHECK(nulls);
+    nulls_ = reinterpret_cast<const uint8_t*>(nulls->c_str());
+    nulls_size_ = nulls->size();
+  }
+
+  // The memory for these ptrs is owned by the ColumnarRowSet that
+  // created this Column.
+  //
+  // Due to the issue described in HUE-2722, the null bitmap may have fewer
+  // bytes than expected for some versions of Hive, so we retain the ability to
+  // check the buffer size in case this happens.
+  const uint8_t* nulls_;
+  int nulls_size_;
 };
 
 template <class T>
 class TypedColumn : public Column {
  public:
 
-  const uint8_t* nulls() const { return nulls_; }
   const std::vector<T>& data() const { return *data_; }
   int64_t length() const { return data().size(); }
 
   // Returns the value for the i-th row within this set of data for this column.
   const T& GetData(int i) const { return data()[i]; }
-  // Returns true iff the value for the i-th row within this set of data for this
-  // column is null.
-  bool IsNull(int i) const { return (nulls()[i / 8] & (1 << (i % 8))) != 0; }
 
  private:
   // For access to the c'tor.
   friend class ColumnarRowSet;
 
-  TypedColumn(const uint8_t* nulls, const std::vector<T>* data)
-    : nulls_(nulls), data_(data) {}
+  TypedColumn(const std::string* nulls, const std::vector<T>* data)
+      : Column(nulls), data_(data) {}
 
-  // The memory for these ptrs is owned by the ColumnarRowSet that
-  // created this Column.
-  const uint8_t* nulls_;
   const std::vector<T>* data_;
 };
 
@@ -88,6 +103,7 @@ typedef TypedColumn<int8_t> ByteColumn;
 typedef TypedColumn<int16_t> Int16Column;
 typedef TypedColumn<int32_t> Int32Column;
 typedef TypedColumn<int64_t> Int64Column;
+typedef TypedColumn<double> DoubleColumn;
 typedef TypedColumn<std::string> StringColumn;
 typedef TypedColumn<std::string> BinaryColumn;
 
@@ -116,8 +132,12 @@ class ColumnarRowSet {
   std::unique_ptr<Int16Column> GetInt16Col(int i) const;
   std::unique_ptr<Int32Column> GetInt32Col(int i) const;
   std::unique_ptr<Int64Column> GetInt64Col(int i) const;
+  std::unique_ptr<DoubleColumn> GetDoubleCol(int i) const;
   std::unique_ptr<StringColumn> GetStringCol(int i) const;
   std::unique_ptr<BinaryColumn> GetBinaryCol(int i) const;
+
+  template <typename T>
+  std::unique_ptr<T> GetCol(int i) const;
 
  private:
   // Hides Thrift objects from the header.

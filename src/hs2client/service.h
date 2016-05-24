@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef HS2CLIENT_HS2SERVICE_H
-#define HS2CLIENT_HS2SERVICE_H
+#ifndef HS2CLIENT_SERVICE_H
+#define HS2CLIENT_SERVICE_H
 
 #include <map>
 #include <memory>
@@ -131,4 +131,4 @@ class Service {
 
 }
 
-#endif // HS2CLIENT_HS2SERVICE_H
+#endif // HS2CLIENT_SERVICE_H
