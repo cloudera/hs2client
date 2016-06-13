@@ -1,0 +1,42 @@
+sudo: required
+dist: trusty
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - kalakris-cmake
+    packages:
+    - gcc-4.9
+    - g++-4.9
+    - gdb
+    - ccache
+    - cmake
+    - valgrind
+matrix:
+  fast_finish: true
+  include:
+  - compiler: gcc
+    env: HS2CLIENT_TEST_GROUP=packaging
+    os: linux
+    before_script:
+    - export CC="gcc-4.9"
+    - export CXX="g++-4.9"
+    script:
+    - $TRAVIS_BUILD_DIR/ci/travis_conda_build.sh
+  - os: osx
+    env: HS2CLIENT_TEST_GROUP=packaging
+    language: objective-c
+    osx_image: xcode6.4
+    compiler: clang
+    addons:
+    before_script:
+    before_install:
+    script:
+    - $TRAVIS_BUILD_DIR/ci/travis_conda_build.sh
+
+before_install:
+- ulimit -c unlimited -S
+
+env:
+  global:
+    secure: "sb0AMiuR2w+9AbtYz6o+QmN3x1G6LSXU4uS6FMVgE7bZCvomDInYgsKhmO/KpUlBSxilZzisIYZOf98N2q293Y6QIjnlnXgwiLlt0wp6sRt8gePn+m0WjChsQ+jVuHlaT+cFU2lrgrcbRu+uVqOY0P+ORS0FNYk7rbU6hJLQNokuE9tYdQlPN31SHvsEOO5QbVnX/wVP2XtBZe/v9bsrqF8oh5Hq7fGr7l8obIbrrJlWPayQc28SRx65/QTEZ+MSLoBVB5PaVBwpkQHLLivvz2AeZlk3MDQd1DkGcFtFAsVar/tRtXCnZIs5JRACMpS/Vgy1MngP9XvHpJApv4O55TONxsHtoY6OApxqybkL5MWjSqJZi2H9rcC0dyb1aYYhn6mUvmBiX96CUWPSJwJdNep51KZbxmXxeXYYSHm7hI4KWEz5K806TlWSGVPvCjfgEz3+OdcoqCdtJNAEXAw1kYBFN6T6sh84qQLH/nFQTrrq9DGd+/8VMvbR9QHhZo5F6Opri6a8Es51c0UYwbb1aG5+YFrRT8OfyFnGkaWqZVWPaJXlkgYm7jMDc4yBmmCDoOYXo5DLxQdZXzE4bVmIHkj0Ni1E2GpXwD6SXLcZBH2jJrgWC9cM20xf6z01oBsIBz27bUaxkhVHar8WON58vc/TWWhaksk8l6gYVCKjwzA="

@@ -1,0 +1,40 @@
+package:
+  name: hs2client
+  version: "0.1"
+
+build:
+  number: {{environ.get('TRAVIS_BUILD_NUMBER', 0)}}    # [unix]
+  rpaths:
+    - lib                                                        # [unix]
+  script_env:
+    - CC [linux]
+    - CXX [linux]
+    - LD_LIBRARY_PATH [linux]
+  skip: true  # [win]
+
+requirements:
+  build:
+    - toolchain
+    - cmake
+    - python
+    - setuptools
+    - cython
+    - numpy
+    - pandas >=0.17.0
+    - libhs2client
+
+  run:
+    - libhs2client
+    - python
+    - numpy
+    - pandas >=0.17.0
+    - six
+
+test:
+  imports:
+    - hs2client
+
+about:
+  home: http://github.com/cloudera/hs2client
+  license: Apache 2.0
+  summary: 'Python bindings for hs2client C++ library'

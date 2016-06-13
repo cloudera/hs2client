@@ -12,13 +12,14 @@ build:
 
 requirements:
   build:
+    - toolchain
     - cmake
     - boost
     - thrift-cpp
 
 test:
   commands:
-    - test -f $PREFIX/lib/libhs2client.so
+    - test -f $PREFIX/lib/libhs2client.so    # [linux]
     - test -f $PREFIX/include/hs2client/api.h
 
 about:

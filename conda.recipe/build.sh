@@ -5,6 +5,9 @@ set -x
 
 cd $RECIPE_DIR
 
+# conda-forge toolchain environment stuff
+source activate "${CONDA_DEFAULT_ENV}"
+
 # Build dependencies
 export BOOST_ROOT=$PREFIX
 export THRIFT_HOME=$PREFIX

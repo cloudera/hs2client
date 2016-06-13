@@ -1,5 +1,16 @@
 # hs2client: C++ Thrift client for Impala and Hive
 
+<table>
+  <tr>
+    <td>Build Status</td>
+    <td>
+    <a href="https://travis-ci.org/cloudera/hs2client">
+    <img src="https://travis-ci.org/cloudera/hs2client.svg?branch=master" alt="travis build status" />
+    </a>
+    </td>
+  </tr>
+</table>
+
 This is a new project to create a robust, high performance open source
 HiveServer2 client library in C++. In addition to being a useful component for
 other C++ projects needing to communicate with Hive, Impala, and any systems
