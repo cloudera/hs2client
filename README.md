@@ -1,5 +1,19 @@
 # hs2client: C++ Thrift client for Impala and Hive
 
+This is a new project to create a robust, high performance open source
+HiveServer2 client library in C++. In addition to being a useful component for
+other C++ projects needing to communicate with Hive, Impala, and any systems
+using the HiveServer2 protocol, we can also create interpreted language
+bindings for other languages, like Python and R.
+
+There is work still remaining to bring the project to feature-completeness with
+other Hive and Impala driver libraries:
+
+- SSL support
+- SASL Thrift transport (for secure clusters, or unsecure clusters configured
+  to use the SASL transport)
+- Tools for asynchronous result set fetching
+
 ## Development bootstrap
 
 To build standalone thirdparty dependencies, ensure you are using a C++11
@@ -34,11 +48,9 @@ export BOOST_HOME=$NATIVE_TOOLCHAIN/boost-$BOOST_VERSION
 export GTEST_HOME=$NATIVE_TOOLCHAIN/googletest-$GTEST_VERSION
 ```
 
-This is configured for out-of-source builds:
+Currently, only in-source builds are working:
 
 ```bash
-mkdir build-debug
-cd build-debug
-cmake ..
+cmake .
 make -j4
 ```
