@@ -3,7 +3,7 @@
 This is a new project to create a robust, high performance open source
 HiveServer2 client library in C++. In addition to being a useful component for
 other C++ projects needing to communicate with Hive, Impala, and any systems
-using the HiveServer2 protocol, we can also create interpreted language
+using the HiveServer2 protocol, we can also create CPU- and memory-efficient
 bindings for other languages, like Python and R.
 
 There is work still remaining to bring the project to feature-completeness with
