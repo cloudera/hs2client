@@ -9,11 +9,9 @@ source $TRAVIS_BUILD_DIR/ci/travis_install_conda.sh
 conda build conda.recipe --channel cloudera/channel/dev
 CONDA_PACKAGE=`conda build --output conda.recipe | grep bz2`
 
-anaconda --token $ANACONDA_TOKEN upload $CONDA_PACKAGE --user cloudera --channel dev;
-
-# if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_PULL_REQUEST == "false" ]; then
-#   anaconda --token $ANACONDA_TOKEN upload $CONDA_PACKAGE --user cloudera --channel dev;
-# fi
+if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_PULL_REQUEST == "false" ]; then
+  anaconda --token $ANACONDA_TOKEN upload $CONDA_PACKAGE --user cloudera --channel dev;
+fi
 
 # Build python-hs2client
 
@@ -24,11 +22,9 @@ build_for_python_version() {
   conda build conda.recipe --python $PY_VERSION --channel cloudera/channel/dev
   CONDA_PACKAGE=`conda build --python $PY_VERSION --output conda.recipe | grep bz2`
 
-  anaconda --token $ANACONDA_TOKEN upload $CONDA_PACKAGE --user cloudera --channel dev;
-
-  # if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_PULL_REQUEST == "false" ]; then
-  # 	anaconda --token $ANACONDA_TOKEN upload $CONDA_PACKAGE --user cloudera --channel dev;
-  # fi
+  if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_PULL_REQUEST == "false" ]; then
+    anaconda --token $ANACONDA_TOKEN upload $CONDA_PACKAGE --user cloudera --channel dev;
+  fi
 }
 
 build_for_python_version 2.7
