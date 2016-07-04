@@ -50,9 +50,9 @@ if [ -n "$F_ALL" -o -n "$F_GTEST" ]; then
   cd $TP_DIR/$GTEST_BASEDIR
 
   if [[ "$OSTYPE" == "darwin"* ]]; then
-    cmake -DCMAKE_CXX_FLAGS="-fPIC -std=c++11 -stdlib=libc++ -DGTEST_USE_OWN_TR1_TUPLE=1 -Wno-unused-value -Wno-ignored-attributes"
+    cmake -DCMAKE_CXX_FLAGS="-fPIC -std=c++11 -stdlib=libc++ -DGTEST_USE_OWN_TR1_TUPLE=1 -Wno-unused-value -Wno-ignored-attributes" -DBUILD_SHARED_LIBS=on
   else
-    CXXFLAGS=-fPIC cmake -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX .
+    CXXFLAGS=-fPIC cmake -DCMAKE_INSTALL_PREFIX:PATH=$PREFIX -DBUILD_SHARED_LIBS=on .
   fi
 
   make
