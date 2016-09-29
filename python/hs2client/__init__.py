@@ -16,7 +16,8 @@
 
 from .ext import (Service, Session, Operation, Schema, ColumnType,
                   PrimitiveType, CharacterType, DecimalType)
-
+import os
 
 def connect(host, port=21050, user=None, protocol='v7'):
+    user = os.environ.get('USER') if user is None else user
     return Service(host, port, user, protocol=protocol)
