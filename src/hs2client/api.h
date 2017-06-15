@@ -16,7 +16,6 @@
 #define HS2CLIENT_API_H
 
 #include "hs2client/columnar-row-set.h"
-#include "hs2client/logging.h"
 #include "hs2client/macros.h"
 #include "hs2client/operation.h"
 #include "hs2client/service.h"

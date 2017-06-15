@@ -14,9 +14,25 @@
 
 #include "hs2client/types.h"
 
+#include "hs2client/logging.h"
 #include "hs2client/thrift-internal.h"
 
 namespace hs2client {
+
+const PrimitiveType* ColumnDesc::GetPrimitiveType() const {
+  return static_cast<PrimitiveType*>(type_.get());
+}
+
+const CharacterType* ColumnDesc::GetCharacterType() const {
+  DCHECK(type_->type_id() == ColumnType::TypeId::CHAR ||
+      type_->type_id() == ColumnType::TypeId::VARCHAR);
+  return static_cast<CharacterType*>(type_.get());
+}
+
+const DecimalType* ColumnDesc::GetDecimalType() const {
+  DCHECK(type_->type_id() == ColumnType::TypeId::DECIMAL);
+  return static_cast<DecimalType*>(type_.get());
+}
 
 const std::string PrimitiveType::ToString() const {
   return TypeIdToString(type_id_);

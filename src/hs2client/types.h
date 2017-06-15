@@ -17,8 +17,6 @@
 
 #include <memory>
 
-#include "hs2client/logging.h"
-
 namespace hs2client {
 
 // Represents a column's type.
@@ -110,18 +108,9 @@ class ColumnDesc {
   const int position() const { return position_; }
   const std::string& comment() const { return comment_; }
 
-  const PrimitiveType* GetPrimitiveType() const {
-    return static_cast<PrimitiveType*>(type_.get());
-  }
-  const CharacterType* GetCharacterType() const {
-    DCHECK(type_->type_id() == ColumnType::TypeId::CHAR ||
-        type_->type_id() == ColumnType::TypeId::VARCHAR);
-    return static_cast<CharacterType*>(type_.get());
-  }
-  const DecimalType* GetDecimalType() const {
-    DCHECK(type_->type_id() == ColumnType::TypeId::DECIMAL);
-    return static_cast<DecimalType*>(type_.get());
-  }
+  const PrimitiveType* GetPrimitiveType() const;
+  const CharacterType* GetCharacterType() const;
+  const DecimalType* GetDecimalType() const;
 
  private:
   const std::string column_name_;

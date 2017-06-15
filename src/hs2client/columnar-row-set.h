@@ -20,7 +20,6 @@
 #include <string>
 #include <vector>
 
-#include "hs2client/logging.h"
 #include "hs2client/macros.h"
 
 namespace hs2client {
@@ -62,11 +61,7 @@ class Column {
   bool IsNull(int i) const { return (nulls_[i / 8] & (1 << (i % 8))) != 0; }
 
  protected:
-  Column(const std::string* nulls) {
-    DCHECK(nulls);
-    nulls_ = reinterpret_cast<const uint8_t*>(nulls->c_str());
-    nulls_size_ = nulls->size();
-  }
+  Column(const std::string* nulls);
 
   // The memory for these ptrs is owned by the ColumnarRowSet that
   // created this Column.

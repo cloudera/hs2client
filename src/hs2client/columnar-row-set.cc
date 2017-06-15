@@ -14,6 +14,7 @@
 
 #include "hs2client/columnar-row-set.h"
 
+#include "hs2client/logging.h"
 #include "hs2client/thrift-internal.h"
 
 #include "gen-cpp/TCLIService.h"
@@ -22,6 +23,12 @@ namespace hs2 = apache::hive::service::cli::thrift;
 using std::unique_ptr;
 
 namespace hs2client {
+
+Column::Column(const std::string* nulls) {
+  DCHECK(nulls);
+  nulls_ = reinterpret_cast<const uint8_t*>(nulls->c_str());
+  nulls_size_ = nulls->size();
+}
 
 ColumnarRowSet::ColumnarRowSet(ColumnarRowSetImpl* impl) : impl_(impl) {}
 
