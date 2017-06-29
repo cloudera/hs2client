@@ -50,7 +50,7 @@ Status Session::Close() {
   return TStatusToStatus(resp.status);
 }
 
-Status Session::Open(const HS2ClientConfig& config,const string& user) {
+Status Session::Open(const HS2ClientConfig& config, const string& user) {
   hs2::TOpenSessionReq req;
   req.__set_configuration(config.GetConfig());
   req.__set_username(user);
