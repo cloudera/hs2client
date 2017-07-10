@@ -78,7 +78,7 @@ void Service::SetSendTimeout(int timeout) {
 Status Service::OpenSession(const string& user, const HS2ClientConfig& config,
     unique_ptr<Session>* session) const {
   session->reset(new Session(rpc_));
-  return (*session)->Open(config);
+  return (*session)->Open(config, user);
 }
 
 Service::Service(const string& host, int port, int conn_timeout,

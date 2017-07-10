@@ -62,7 +62,7 @@ class Session {
 
   // Performs the RPC that initiates the session and stores the returned handle.
   // Must be called before operations can be executed.
-  Status Open(const HS2ClientConfig& config);
+  Status Open(const HS2ClientConfig& config, const std::string& user);
 
   std::unique_ptr<SessionImpl> impl_;
   std::shared_ptr<ThriftRPC> rpc_;
