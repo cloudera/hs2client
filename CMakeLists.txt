@@ -223,17 +223,7 @@ message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 
 # Build with C++11 and SSE3 by default
 # TODO(wesm): These compiler warning suppressions should be removed one by one
-
-#----------------------------
-# Settings for power arch
-#----------------------------
-EXECUTE_PROCESS( COMMAND uname -m COMMAND tr -d '\n' OUTPUT_VARIABLE ARCH )
-if (${ARCH} MATCHES "ppc64")
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
-else()
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -msse3 -Wall")
-endif()
-message(STATUS "ARCH: ${ARCH}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 
 if (APPLE)
   # Use libc++ to avoid linker errors on some platforms
