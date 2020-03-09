@@ -13,3 +13,5 @@ if [ "$(uname)" != "Darwin" ]; then
 fi
 
 export GTEST_HOME=$THIRDPARTY_DIR/$GTEST_BASEDIR
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$THRIFT_HOME/lib

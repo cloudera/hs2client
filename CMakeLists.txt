@@ -35,7 +35,7 @@ if(APPLE)
 endif()
 
 if (NOT HS2CLIENT_LINK)
-  set(HS2CLIENT_LINK "a")
+  set(HS2CLIENT_LINK "d")
 elseif(NOT ("auto" MATCHES "^${HS2CLIENT_LINK}" OR
             "dynamic" MATCHES "^${HS2CLIENT_LINK}" OR
             "static" MATCHES "^${HS2CLIENT_LINK}"))
@@ -164,11 +164,9 @@ set(LIBS ${LIBS} ${THRIFT_LIBS})
 message(STATUS "Thrift include dir: ${THRIFT_INCLUDE_DIR}")
 message(STATUS "Thrift contrib dir: ${THRIFT_CONTRIB_DIR}")
 message(STATUS "Thrift library path: ${THRIFT_LIBS}")
-message(STATUS "Thrift static library: ${THRIFT_STATIC_LIB}")
 message(STATUS "Thrift compiler: ${THRIFT_COMPILER}")
-# for static linking with Thrift, THRIFT_STATIC_LIB is set in FindThrift.cmake
-add_library(thriftstatic STATIC IMPORTED)
-set_target_properties(thriftstatic PROPERTIES IMPORTED_LOCATION ${THRIFT_STATIC_LIB})
+add_library(thrift SHARED IMPORTED)
+set_target_properties(thrift PROPERTIES IMPORTED_LOCATION ${THRIFT_LIBS})
 
 # Thrift requires these definitions for some types that we use
 add_definitions(-DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H -DHAVE_NETDB_H)
@@ -177,8 +175,8 @@ add_definitions(-fPIC)
 ## GTest
 find_package(GTest REQUIRED)
 include_directories(SYSTEM ${GTEST_INCLUDE_DIR})
-add_library(gtest STATIC IMPORTED)
-set_target_properties(gtest PROPERTIES IMPORTED_LOCATION ${GTEST_STATIC_LIB})
+add_library(gtest SHARED IMPORTED)
+set_target_properties(gtest PROPERTIES IMPORTED_LOCATION ${GTEST_SHARED_LIB})
 
 # where to put generated archives (.a files)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${BUILD_OUTPUT_ROOT_DIRECTORY}")
@@ -314,7 +312,7 @@ add_library(hs2client
 
 set(LIBHS2CLIENT_LINK_LIBS
   hs2client_thrift
-  thriftstatic
+  thrift
 )
 
 add_dependencies(hs2client hs2client_thrift)
